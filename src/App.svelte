@@ -2,16 +2,16 @@
  
   import { Swipe, SwipeItem } from "svelte-swipe"; // gzipped 3.37 KB
   import {fade,slide} from 'svelte/transition';
-  import Modal from './Modal.svelte';
+  import Nfcpage from './nfcpage.svelte';
+  import Screen1 from './screen1.svelte';
+  import Screen2 from './screen2.svelte';
 
-  let showModal = false;
-  let nfc= true;
+
+  let nfcPage= true;
  
   let showIndicators = true;
   let transitionDuration = 1000; //ms
-  function sayHi(){
-    alert('Hi')
-  }
+ 
 </script> 
  
 <style>
@@ -94,96 +94,57 @@ padding-right: 6%;
 		color:RGB(236,71,129);
 		font-size : 13px;
 	}
-	
+	.skiptour{  
+		background: none!important;
+  		border: none;
+  		padding: 0!important;
+		cursor: pointer;
+		color:RGB(236,71,129);
+	}
 </style> 
- {#if nfc}
+
+ {#if nfcPage}
  <!--this is the sliding carousel part -->
 	<div class = "header"><img src="./images/white.png" alt=""></div>
-	
-
-
-<div class="swipe-holder">
-  <Swipe {showIndicators}  {transitionDuration}>
-    <SwipeItem>
-      <img  src="./images/educate.png" alt=""   >
-			<h1>Educate</h1>
-			<p> Assist at the point of activity with process knowledge and product information.</p>
-    </SwipeItem>
- 
-    <SwipeItem>
-      <img src="./images/assess.png" alt="">
-			<h1>Assess</h1>
-			<p> References and training checklists provide real-time assesment and employmee support.</p>
-
-    </SwipeItem>
- 
-    <SwipeItem>
-       <img src="./images/empower.png" alt="">
-
-			<h1>Assess</h1>
-			<p> References and training checklists provide real-time assesment and employmee support.</p>
-			<div class="button">
-				<button class="has-pointer-event" on:click="{() => nfc = false}" >Finish</button>
-      </div>
-    </SwipeItem>
 		
-  </Swipe>
-
-</div>
 
 
+	<div class="swipe-holder">
+	<Swipe {showIndicators}  {transitionDuration}>
+		<Screen1/>
+		
+		<Screen2/>
+		<SwipeItem>
+		<img src="./images/empower.png" alt="">
 
-<div class="bottom">
-	
+				<h1>Assess</h1>
+				<p> References and training checklists provide real-time assesment and employmee support.</p>
+				<div class="button">
+					<button class="has-pointer-event" on:click="{() => nfcPage = false}" >Finish</button>
+		</div>
+		</SwipeItem>
+			
+	</Swipe>
+
+	</div>
+
+
+
+	<div class="bottom">
+		
+		<div>
+			<h2><button class="skiptour" href="" on:click="{() => nfcPage = false}" >Skip tour</button></h2>
+		</div>
 	<div>
-		<h2>Skip tour</h2>
-	</div>
-<div>
-	<h2 class= "login" style="color:white">Already a user? <a href=""><span> Login</span></a>  </h2>
-	
-	</div>
-	
-
-	
-</div>
-{:else}
-<!-- this is the nfc part -->
-<div transition:fade class = "header" style="background:white;"><img src="./images/color.png" alt=""></div>
-	<img transition:fade style="margin-left:auto;margin-right:auto;display:block;" src="./images/no_nfc.png" alt="">
-
-		<h1 transition:fade style = "color:black;">Enable NFC reader</h1>
-		<p  transition:fade style = "color:black;"> Open the NFC reader on your iPhone to read the tag.</p>
-		<div  transition:fade class="button">
-			<button class="has-pointer-event" on:click="{() => showModal = true}">Open Reader</button>
+		<h2 class= "login" style="color:white">Already a user? <a href=""><span> Login</span></a>  </h2>
+		
 		</div>
-
-	
-<div  transition:fade class="bottom"  style= "background:white;">
-	
-	
-<div transition:fade >
-	<h2 class= "login" style="color:black;position: absolute;bottom: 5%;left: 34%;">Already a user? <a href=""><span> Login</span></a>  </h2>
-	
-</div>
-	
-	<div transition:fade style="position: absolute;bottom: 0px;left: 34%;"><h2>About Smart Access</h2> </div>
-
-	
-</div>
-
-{/if}
-<!--this is the slide up modal -->
-{#if showModal}
-	<Modal  on:close="{() => showModal = false}">
-		<h2 slot="header" style="text-align:center;margin-top: 0px;margin-bottom: 0px;">
-			Ready to Scan
-		</h2>
-<img transition:fade style="margin-left:auto;margin-right:auto;display:block; max-height:5%;" src="./images/no_nfc.png" alt="">
+		
 
 		
-		<p  transition:fade style = "color:black;padding-left:0;padding-right:0;"> Hold your device near the tag to scan it.</p>
-		<div  transition:fade class="button">
-			<button class="has-pointer-event" on:click="{() => showModal = false}">Cancel</button>
-		</div>
-	</Modal>
+	</div>
+{:else}
+
+	<Nfcpage />
+
 {/if}
